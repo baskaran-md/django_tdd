@@ -6,13 +6,12 @@
 <h1>My Movie List</h1>
 
 <form method="POST"> {% csrf_token %}
-    <input id="id_movie_name" placeholder="Enter a Movie Name"/>
+    <input id="id_movie_name" name="movie_name" placeholder="Enter a Movie Name"/>
 </form>
 
 <table id="id_movie_list_table">
     <tbody>
-        <tr><td>Frozon</td></tr>
-        <tr><td>Troy</td></tr>
+        <tr><td> {{ movie_name }} </td></tr>
     </tbody>
 </table>
 </body>

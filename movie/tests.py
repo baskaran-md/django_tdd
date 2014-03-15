@@ -19,3 +19,11 @@ class HomePageTest(TestCase):
         self.assertTrue(response.content.endswith("</html>"))
         self.assertIn("<title>Movie List</title>", response.content)
         self.assertIn("<h1>My Movie List</h1>", response.content)
+
+
+    def test_home_page_post_response(self):
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['movie_name'] = 'Frozon'
+        response = home_page(request)
+        self.assertIn("Frozon", response.content)
