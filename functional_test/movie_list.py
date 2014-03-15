@@ -14,7 +14,7 @@ class EndUserTest(unittest.TestCase):
         self.browser.quit()
 
     def test_add_a_movie_and_fetch_it(self):
-        self.assertIn('Movie', self.browser.title)
+        self.assertEqual("Movie List",self.browser.title)
 
 
 
