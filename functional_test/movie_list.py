@@ -32,15 +32,7 @@ class EndUserTest(unittest.TestCase):
         input_box_place_holder = input_box.get_attribute("placeholder")
         self.assertEqual(input_box_place_holder, "Enter a Movie Name")
 
-        # Add a movie name in the input text box
-        input_box.send_keys("Frozon")
-        input_box.send_keys(Keys.ENTER)
-
-        # Check the text box is empty after adding
-        #input_box_place_holder = input_box.get_attribute("placeholder")
-        #self.assertEqual(input_box_place_holder,"Enter a Movie Name")
-
-        # Check the movie name in movie list table
+        # Add a movie and Check the movie name in movie list table
         self.add_content_in_movie_name_input_box("Troy")
         self.check_content_in_movie_list_table("Troy")
 
@@ -55,10 +47,9 @@ class EndUserTest(unittest.TestCase):
     def check_content_in_movie_list_table(self, movie_name):
         table = self.browser.find_element_by_id("id_movie_list_table")
         table_rows = table.find_elements_by_tag_name("tr")
-        time.sleep(2)
+        time.sleep(3)
         self.assertTrue(any(movie_name in table_row.text for table_row in table_rows),
                         "Movie %s is not added to the table. Table content: %s" % (movie_name, table.text))
-
 
 if __name__ == 'main':
     unittest.main()

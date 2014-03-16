@@ -11,7 +11,9 @@
 
 <table id="id_movie_list_table">
     <tbody>
-        <tr><td> {{ movie_name }} </td></tr>
+        {% for movie in movies %}
+            <tr><td> {{ movie.name }} </td></tr>
+        {% endfor %}
     </tbody>
 </table>
 </body>

@@ -4,7 +4,7 @@ from django.http.request import HttpRequest
 from django.template.loader import render_to_string
 
 from .views import home_page
-
+from .models import Movie
 
 class HomePageTest(TestCase):
 
@@ -14,16 +14,42 @@ class HomePageTest(TestCase):
 
     def test_home_page_html_content(self):
         request = HttpRequest()
+        request.method = 'GET'
         response = home_page(request)
-        self.assertTrue(response.content.startswith("<html>"))
-        self.assertTrue(response.content.endswith("</html>"))
-        self.assertIn("<title>Movie List</title>", response.content)
-        self.assertIn("<h1>My Movie List</h1>", response.content)
+        expected_html = render_to_string("home.html")
+        self.assertEqual(response.content, expected_html)
 
 
-    def test_home_page_post_response(self):
+class MovieModelTest(TestCase):
+
+    def test_movie_get_request_not_save_content(self):
         request = HttpRequest()
-        request.method = 'POST'
-        request.POST['movie_name'] = 'Frozon'
+        request.method = 'GET'
+        home_page(request)
+        self.assertEqual(Movie.objects.count(), 0)
+
+    def test_save_and_retrieve_movies(self):
+        movie_troy       = "Frozon"
+        movie_terminator = "Terminator"
+
+        Movie.objects.create(name = movie_troy)
+        Movie.objects.create(name = movie_terminator)
+
+        movies = Movie.objects.all()
+
+        self.assertEqual(movies.count(), 2)
+
+        self.assertEqual(movie_troy,       movies[0].name)
+        self.assertEqual(movie_terminator, movies[1].name)
+
+
+    def test_no_save_and_retrieve_movies(self):
+        Movie.objects.create(name = "Frozon")
+        Movie.objects.create(name = "Terminator")
+
+        request = HttpRequest()
+        request.method = 'GET'
         response = home_page(request)
+
         self.assertIn("Frozon", response.content)
+        self.assertIn("Terminator", response.content)
